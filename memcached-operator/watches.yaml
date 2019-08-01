@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: memcached-operator.memcached.org
+  kind: Memcached
+  role: /opt/ansible/roles/memcached
