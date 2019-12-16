@@ -7,7 +7,7 @@ image: memcached:1.5.12-alpine
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 ##
-# imagePullPolicy:
+imagePullPolicy: Always
 #
 
 ## Replica count
