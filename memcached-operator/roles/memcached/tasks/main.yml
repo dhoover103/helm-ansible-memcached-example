@@ -53,7 +53,7 @@
             containers:
             - name: "{{ memcached.fullname }}"
               image: "{{ image }}"
-              imagePullPolicy: "{{ metrics.imagePullPolicy }}"
+              imagePullPolicy: "{{ imagePullPolicy }}"
               #command:
               #- memcached
               #- -m "{{ memcached.maxItemMemory }}"
