@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ name }}
+  labels:
+    app: {{ name }}
+    chart: "{{ name }}-{{ version }}"
+  annotations:
+{{ service_annotations | toYaml | indent(4) }}
+spec:
+  clusterIP: None
+  ports:
+  - name: memcache
+    port: 11211
+    targetPort: memcache
+{% if metrics.enabled %}
+  - name: metrics
+    port: 9150
+    targetPort: metrics
+{% endif %}
+  selector:
+    app: {{ name }}

@@ -1,0 +1,14 @@
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ name }}
+  labels:
+    app: {{ name }}
+    chart: "{{ name }}-{{ version }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ name }}
+      chart: "{{ name }}-{{ version }}"
+  minAvailable: {{ pdb_min_available }}
+

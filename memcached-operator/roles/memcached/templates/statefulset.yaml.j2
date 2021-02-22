@@ -1,0 +1,47 @@
+apiVersion: apps/v1beta1
+kind: {{ kind }}
+metadata:
+  name: {{ name }}
+  labels:
+    app: {{ name }}
+    chart: "{{ name }}-{{ version }}"
+spec:
+  {% if kind is defined eq "StatefulSet" %}
+  serviceName: {{ name }}-statefulset
+  {% endif %}
+  replicas: {{ replica_count }}
+  template:
+    metadata:
+      labels:
+        app: {{ name }}
+        chart: "{{ name }}-{{ version }}"
+    spec:
+      {% if security_context.enabled is defined %}
+      security_context:
+        fs_group: {{ security_context.fs_group }}
+      {% endif %}
+      affinity:
+        pod_anti_affinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: "kubernetes.io/hostname"
+            labelSelector:
+              matchLabels:
+                app:  {{ template "memcached.fullname" . }}
+      containers:
+      - name: {{ name }}
+        image: {{ image }}
+        imagePullPolicy: {{ "" | default(image_pull_policy) | quote }}
+        ports:
+        - name: memcache
+          containerPort: 11211
+        livenessProbe:
+          tcpSocket:
+            port: memcache
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: memcache
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        resources:
